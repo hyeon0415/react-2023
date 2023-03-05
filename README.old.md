@@ -1,6 +1,6 @@
 # react-2023
 
-terminal에서 react-create-app . 실행
+terminal에서 create-react-app . 실행
 
 npm start -> react개발환경으로 코딩을 시작하겠다.
 
@@ -10,4 +10,4 @@ npm start -> 개발하는 환경, 배포하기엔 부적합
 ctl c -> 개발환경 끔
 
 npm run build -> 배포판 만드는 명령어 build/index.html .. 공백없음, 배포할땐 필요없기 때문
-serve -s build -> 사용자가 어떤 경로로 들어오든 build/index.html로 들어옴
+npx serve -s build -> 사용자가 어떤 경로로 들어오든 build/index.html로 들어옴
