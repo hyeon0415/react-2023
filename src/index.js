@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// App이라는 태그가 id값이 root인 태그로 렌더링되는것
+// root태그는 public/index.html에 있음
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
