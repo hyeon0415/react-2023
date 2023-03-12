@@ -11,7 +11,6 @@ function Article(props){
 function Header (props) {
   return <header>
   <h1><a href="/" onClick={(event)=>{
-    // event 막음
     event.preventDefault();
     props.onChangeMode();
   }}>{props.title}</a></h1>
@@ -97,10 +96,24 @@ function App() {
       }
     }
     content = <Article title={title} body={body}></Article>
-    contextControl = <li><a href={'/update'+id} onClick={event=>{
+    contextControl = <>
+    <li><a href={'/update'+id} onClick={event=>{
       event.preventDefault();
       setMode('UPDATE');
     }}>Update</a></li>
+    <li><input type="button" value="Delete" onClick={()=>{
+      const newTopics = []
+      for(let i=0; i<topics.length; i++){
+        // 내가 클릭한 id가 아닌값
+        if(topics[i].id !== id){
+          // id값이 일치하지 않는 값만 push(클릭하지 않은 id값만 push됨.. 이렇게 delete를 해도 되는지..?)
+          newTopics.push(topics[i]);
+        }
+      }
+      setTopics(newTopics);
+      setMode('WELCOME');
+    }}></input></li>
+    </>
   } else if(mode === 'CREATE'){
     // obj, array는 범객체이므로 데이터를 복제하고 그 값을 변경
     content = <Create onCreate={(_title, _body)=>{
