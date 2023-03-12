@@ -50,7 +50,27 @@ function Create(props){
     </form>
   </article>
 }
-
+function Update(props){
+  const [title, setTitle] = useState(props.title);
+  const [body, setBody] = useState(props.body);
+  return <article>
+    <h2>Update</h2>
+    <form onSubmit={event=>{
+      event.preventDefault();
+      const title = event.target.title.value;
+      const body = event.target.body.value;
+      props.onUpdate(title, body);
+    }}>
+      <p><input type="text" name="title" placeholder="title" value={title} onChange={event=>{
+        setTitle(event.target.value);
+      }}/></p>
+      <p><textarea name="body" placeholder="body" value={body} onChange={event=>{
+        setBody(event.target.value);
+      }}></textarea></p>
+      <p><input type="submit" value="Update"></input></p>
+    </form>
+  </article>
+}
 function App() {
   // const _mode = useState('WELCOME');   // useState인자는 초기값
   // const mode = _mode[0];
@@ -64,6 +84,7 @@ function App() {
     {id:3, title:'javascript', body:'javascript is ...'}
   ]);
   let content = null;
+  let contextControl = null;
   if(mode === 'WELCOME'){
     content =  <Article title="Welcome" body="Hello, WEB"></Article>
   } else if(mode === 'READ'){
@@ -76,6 +97,10 @@ function App() {
       }
     }
     content = <Article title={title} body={body}></Article>
+    contextControl = <li><a href={'/update'+id} onClick={event=>{
+      event.preventDefault();
+      setMode('UPDATE');
+    }}>Update</a></li>
   } else if(mode === 'CREATE'){
     // obj, array는 범객체이므로 데이터를 복제하고 그 값을 변경
     content = <Create onCreate={(_title, _body)=>{
@@ -87,6 +112,28 @@ function App() {
       setId(nextId);
       setNextId(nextId+1);
     }}></Create>
+  } else if(mode === 'UPDATE'){
+    let title,body = null;
+    for(let i=0; i<topics.length; i++){
+      console.log(topics[i].id, id);
+      if(topics[i].id === id){
+        title = topics[i].title;
+        body = topics[i].body;
+      }
+    }
+    content = <Update title={title} body={body} onUpdate={(title,body)=>{
+      console.log(title,body);
+      const newTopics = [...topics]
+      const updatedTopic = {id:id, title:title, body:body}
+      for(let i=0; i<newTopics.length; i++){
+        if(newTopics[i].id === id){
+          newTopics[i] = updatedTopic;
+          break;
+        }
+      }
+      setTopics(newTopics);
+      setMode('READ');
+    }}></Update>
   }
   return (
     <div className="App">
@@ -98,10 +145,13 @@ function App() {
         setId(_id);
       }}></Nav>
       {content}
-      <a href="/create" onClick={event=>{
+      <ul>
+      <li><a href="/create" onClick={event=>{
         event.preventDefault();
         setMode('CREATE');
-      }}>Create</a>
+      }}>Create</a></li>
+      {contextControl}
+      </ul>
     </div>
   );
 }
